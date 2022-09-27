@@ -26,7 +26,7 @@ class SlowDMonotonicNN(nn.Module):
             net.nb_steps = nb_steps
         self.outer_net.nb_steps = nb_steps
 
-    def forward(self, mon_in, cond_in):
+    def forward(self, mon_in, cond_in=None):
         inner_out = torch.zeros(mon_in.shape).to(self.device)
         for i in range(self.mon_in):
             inner_out[:, [i]] = self.inner_nets[i](mon_in[:, [i]], cond_in)

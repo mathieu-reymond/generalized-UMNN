@@ -40,7 +40,7 @@ def integrate(x0, nb_steps, step_sizes, integrand, h, compute_grad=False, x_tot=
         steps_t = steps.unsqueeze(0).expand(x0_t.shape[0], -1, x0_t.shape[2])
         X_steps = x0_t + (xT_t-x0_t)*(steps_t + 1)/2
         X_steps = X_steps.contiguous().view(-1, x0_t.shape[2])
-        h_steps = h_steps.contiguous().view(-1, h.shape[1])
+        h_steps = h_steps.contiguous().view(X_steps.shape[0], h.shape[1])
         dzs = integrand(X_steps, h_steps)
         dzs = dzs.view(xT_t.shape[0], nb_steps+1, -1)
         dzs = dzs*cc_weights.unsqueeze(0).expand(dzs.shape)
@@ -56,7 +56,7 @@ def integrate(x0, nb_steps, step_sizes, integrand, h, compute_grad=False, x_tot=
         steps_t = steps.unsqueeze(0).expand(x0_t.shape[0], -1, x0_t.shape[2])
         X_steps = x0_t + (xT_t - x0_t) * (steps_t + 1) / 2
         X_steps = X_steps.contiguous().view(-1, x0_t.shape[2])
-        h_steps = h_steps.contiguous().view(-1, h.shape[1])
+        h_steps = h_steps.contiguous().view(X_steps.shape[0], h.shape[1])
         x_tot_steps = x_tot_steps.contiguous().view(-1, x_tot.shape[1])
 
         g_param, g_h = computeIntegrand(X_steps, h_steps, integrand, x_tot_steps, nb_steps+1)
